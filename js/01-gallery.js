@@ -1,15 +1,9 @@
-import { galleryItems } from './gallery-items.js';
-
+import { galleryItems } from "./gallery-items.js";
 // Change code below this line
-
-const galleryContainer = document.querySelector(".gallery");
-const instance = basicLightbox;
-galleryContainer.addEventListener('click', onGalleryClick);
-galleryContainer.insertAdjacentHTML("beforeend", galleryCardMarkup(galleryItems));
-
-function galleryCardMarkup(img) {
-   return img.map(({preview,original,description}) => {
-      return  `<div class="gallery__item">
+const galleryRef = document.querySelector(".gallery");
+const galleryMarkup = galleryItems
+  .map(({ preview, original, description }) => {
+    return `<div class="gallery__item">
       <a class="gallery__link" href="${original}">
         <img
           class="gallery__image"
@@ -18,27 +12,21 @@ function galleryCardMarkup(img) {
           alt="${description}"
         />
       </a>
-    </div>`
- }).join("");
-};
-function onGalleryClick(e) {
-    е.preventDefault();
-basicLightbox.create(`${original}`, {
-            onShow: (instance) => {
-                instance.element().querySelector('gallery_image').onclick = instance.close
-            }
-        })
-    }
-    window.addEventListener("keyup", clickKey);
-  
-  function onClickHandlerClose(e) {
-    е.preventDefault(); 
+    </div>`;
+  })
+  .join("");
+galleryRef.insertAdjacentHTML("beforeend", galleryMarkup);
+galleryRef.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (e.target.nodeName !== "IMG") {
+    return;
+  }
+  instance.element().querySelector("img").src = e.target.dataset.source;
+  instance.show();
+});
 
-    window.removeEventListener("keyup", clickKey);
-  }
-function clickKey(e) {
-    if (e.code === "Escape") {
-      onClickHandlerClose();
-    }
-  }
-  
+const instance = basicLightbox.create(`<img src="" />`, {
+  onShow: (instance) => ("onShow", instance),
+  onClose: (instance) => ("onClose", instance),
+});
+
