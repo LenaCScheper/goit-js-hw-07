@@ -23,25 +23,21 @@ function galleryCardMarkup(img) {
 };
 function onGalleryClick(e) {
     е.preventDefault();
-    if (е.target.NODENAME !== 'IMG') {
-    return;
-    }
-    if (e.target.nodeName === "IMG") {
-        basicLightbox.create(`${original}`, {
+basicLightbox.create(`${original}`, {
             onShow: (instance) => {
-                instance.element().querySelector('a').onclick = instance.close
+                instance.element().querySelector('gallery_image').onclick = instance.close
             }
         })
     }
     window.addEventListener("keyup", clickKey);
-  }
+  
   function onClickHandlerClose(e) {
     е.preventDefault(); 
 
     window.removeEventListener("keyup", clickKey);
   }
-function clickKey(event) {
-    if (event.code === "Escape") {
+function clickKey(e) {
+    if (e.code === "Escape") {
       onClickHandlerClose();
     }
   }
